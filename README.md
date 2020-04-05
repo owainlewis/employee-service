@@ -1,35 +1,36 @@
 # EmployeeService
 
-How to start the EmployeeService application
----
+A sample employee CRUD application using Dropwizard, MySQL and JBDI. Demonstrates using Dropwizard for
+
+- Database migrations
+- CRUD
+- Packaging with Docker
+- Healthchecking MySQL database
+- Metrics and monitoring
+- Logging
+- Authentication filters
+
+## Run the applicatoin
 
 1. Run `mvn clean install` to build your application
 1. Start application with `java -jar target/employee-service-1.0-SNAPSHOT.jar server config.yml`
 1. To check that your application is running enter url `http://localhost:8080`
 
-Health Check
----
-
 ## Create the database
 
-```
-mysql -u root
-
+```sql
 CREATE USER 'admin'@'localhost' IDENTIFIED BY 'password';
 CREATE DATABASE employees;
 GRANT ALL PRIVILEGES ON employees.* TO 'admin'@'localhost';
 ```
 
+## Migrate the database
 
-## Schema
+```
+java -jar target/employee-service-1.0-SNAPSHOT.jar db migrate config.yml
+```
 
-- firstName
-- lastName
-- email
-- title
-- phone
+## Healthcheck
 
 To see your applications health enter url `http://localhost:8081/healthcheck`
-
-Create the database
 
