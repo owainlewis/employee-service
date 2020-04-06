@@ -14,8 +14,9 @@ public interface EmployeeDAO {
     @UseRowMapper(EmployeeMapper.class)
     public List<Employee> getEmployees();
 
-    @SqlUpdate("insert into employees (firstName, lastName, email) values (:firstName, :lastName, :email)")
+    @SqlUpdate("insert into employees (firstName, lastName, email, title) values (:firstName, :lastName, :email, :title)")
     public void create(@Bind("firstName") String firstName,
                        @Bind("lastName") String lastName,
-                       @Bind("email") String email);
+                       @Bind("email") String email,
+                       @Bind("title") String title);
 }

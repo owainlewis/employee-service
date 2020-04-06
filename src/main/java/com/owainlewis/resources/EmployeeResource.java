@@ -3,7 +3,9 @@ package com.owainlewis.resources;
 import com.codahale.metrics.annotation.Timed;
 import com.owainlewis.core.Employee;
 import com.owainlewis.dao.EmployeeDAO;
+import io.dropwizard.validation.Validated;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -28,8 +30,8 @@ public final class EmployeeResource {
     }
 
     @POST
-    public Response addEmployee(Employee employee) {
-        dao.create(employee.getFirstName(), employee.getLastName(), employee.getEmail());
+    public Response addEmployee(@Valid @Validated Employee employee) {
+        dao.create(employee.getFirstName(), employee.getLastName(), employee.getEmail(), employee.getTitle());
         return Response.accepted("").build();
     }
 }

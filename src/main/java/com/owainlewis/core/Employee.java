@@ -18,16 +18,28 @@ public class Employee {
     @JsonProperty
     @NotNull
     private String email;
-    
-    public Employee () {
 
+    @JsonProperty
+    @NotNull
+    private String title;
+
+    public Employee () {
     }
 
-    public Employee(@NotNull long id, @NotNull String firstName, @NotNull String lastName, @NotNull String email) {
+    public Employee(@NotNull long id, @NotNull String firstName, @NotNull String lastName, @NotNull String email, @NotNull String title) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public long getId() {

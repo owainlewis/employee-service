@@ -20,6 +20,9 @@
             <column name="email" type="varchar(40)">
                 <constraints nullable="false"/>
             </column>
+            <column name="title" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 </databaseChangeLog>
