@@ -1,5 +1,7 @@
 package com.owainlewis;
 
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.servlets.MetricsServlet;
 import com.owainlewis.dao.EmployeeDAO;
 import com.owainlewis.health.DatabaseHealthCheck;
 import com.owainlewis.resources.EmployeeResource;
@@ -9,6 +11,8 @@ import io.dropwizard.jdbi3.JdbiFactory;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.prometheus.client.Collector;
+import io.prometheus.client.dropwizard.DropwizardExports;
 import org.jdbi.v3.core.Jdbi;
 
 public class EmployeeServiceApplication extends Application<EmployeeServiceConfiguration> {
@@ -35,6 +39,7 @@ public class EmployeeServiceApplication extends Application<EmployeeServiceConfi
     @Override
     public void run(final EmployeeServiceConfiguration configuration,
                     final Environment environment) {
+
         final JdbiFactory factory = new JdbiFactory();
         final Jdbi jdbi = factory.build(environment, configuration.getDataSourceFactory(), "db");
         final EmployeeDAO employeeDAO = jdbi.onDemand(EmployeeDAO.class);
@@ -43,6 +48,12 @@ public class EmployeeServiceApplication extends Application<EmployeeServiceConfi
 
         environment.healthChecks().register("health",
                 new DatabaseHealthCheck(jdbi, configuration.getDataSourceFactory().getValidationQuery().orElse("SELECT 1")));
+
+        registerMetrics(environment);
     }
 
+    private void registerMetrics(Environment environment) {
+        final MetricRegistry registry = environment.metrics();
+        new DropwizardExports(registry).register();
+    }
 }
